@@ -22,32 +22,18 @@ class Config:
     @classmethod
     def get_database_url(cls):
         """Database URL ni olish"""
-        print(f"🔍 DATABASE_URL: {cls.DATABASE_URL}")
-        print(f"🔍 PGHOST: {cls.DB_HOST}")
-        print(f"🔍 PGPORT: {cls.DB_PORT}")
-        print(f"🔍 PGDATABASE: {cls.DB_NAME}")
-        print(f"🔍 PGUSER: {cls.DB_USER}")
-        print(f"🔍 PGPASSWORD: {'*' * len(cls.DB_PASSWORD) if cls.DB_PASSWORD else 'None'}")
-        
         if cls.DATABASE_URL:
             # Railway dan kelgan URL ni asyncpg uchun o'zgartirish
             if cls.DATABASE_URL.startswith('postgresql://'):
-                url = cls.DATABASE_URL.replace('postgresql://', 'postgresql+asyncpg://', 1)
-                print(f"🔗 Async URL: {url}")
-                return url
-            print(f"🔗 Original URL: {cls.DATABASE_URL}")
+                return cls.DATABASE_URL.replace('postgresql://', 'postgresql+asyncpg://', 1)
             return cls.DATABASE_URL
         
         # Railway yoki boshqa PostgreSQL uchun URL yaratish
         if cls.DB_PASSWORD:
-            url = f"postgresql+asyncpg://{cls.DB_USER}:{cls.DB_PASSWORD}@{cls.DB_HOST}:{cls.DB_PORT}/{cls.DB_NAME}"
-            print(f"🔗 Constructed URL: {url}")
-            return url
+            return f"postgresql+asyncpg://{cls.DB_USER}:{cls.DB_PASSWORD}@{cls.DB_HOST}:{cls.DB_PORT}/{cls.DB_NAME}"
         else:
             # Local development uchun
-            url = f"postgresql+asyncpg://{cls.DB_USER}@{cls.DB_HOST}:{cls.DB_PORT}/{cls.DB_NAME}"
-            print(f"🔗 Local URL: {url}")
-            return url
+            return f"postgresql+asyncpg://{cls.DB_USER}@{cls.DB_HOST}:{cls.DB_PORT}/{cls.DB_NAME}"
     
     # Redis
     REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
