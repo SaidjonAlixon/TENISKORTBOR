@@ -25,10 +25,7 @@ class Config:
         if cls.DATABASE_URL:
             # Railway dan kelgan URL ni asyncpg uchun o'zgartirish
             if cls.DATABASE_URL.startswith('postgresql://'):
-                # postgres.railway.internal ni localhost ga o'zgartirish
-                url = cls.DATABASE_URL.replace('postgresql://', 'postgresql+asyncpg://', 1)
-                url = url.replace('postgres.railway.internal', 'localhost')
-                return url
+                return cls.DATABASE_URL.replace('postgresql://', 'postgresql+asyncpg://', 1)
             return cls.DATABASE_URL
         
         # Railway yoki boshqa PostgreSQL uchun URL yaratish
