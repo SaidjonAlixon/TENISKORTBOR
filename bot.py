@@ -916,17 +916,17 @@ async def language_handler(message: Message):
 
 # Error handler
 @dp.error()
-async def error_handler(update: Update, exception: Exception):
+async def error_handler(event, exception: Exception):
     """Xatolarni boshqarish"""
     logger.error(f"Error occurred: {exception}")
     
     try:
         # Agar callback query bo'lsa
-        if update.callback_query:
-            await update.callback_query.answer("❌ Xatolik yuz berdi", show_alert=False)
+        if hasattr(event, 'callback_query') and event.callback_query:
+            await event.callback_query.answer("❌ Xatolik yuz berdi", show_alert=False)
         # Agar oddiy message bo'lsa
-        elif update.message:
-            await update.message.answer("❌ Xatolik yuz berdi. Iltimos, qaytadan urinib ko'ring.")
+        elif hasattr(event, 'message') and event.message:
+            await event.message.answer("❌ Xatolik yuz berdi. Iltimos, qaytadan urinib ko'ring.")
     except Exception as e:
         logger.error(f"Error in error_handler: {e}")
     
