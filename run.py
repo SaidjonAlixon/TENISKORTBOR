@@ -104,10 +104,11 @@ if __name__ == "__main__":
         print("❌ Python 3.8+ talab qilinadi")
         sys.exit(1)
     
-    # .env faylini tekshirish
-    if not os.path.exists(".env"):
+    # .env faylini tekshirish (faqat local development uchun)
+    if not os.path.exists(".env") and not os.getenv("RAILWAY_ENVIRONMENT"):
         print("⚠️  .env fayli topilmadi!")
         print("env_example.txt faylini .env ga nusxalab, ma'lumotlarni to'ldiring")
+        print("Yoki Railway da environment variables ni sozlang")
         sys.exit(1)
     
     # Botni ishga tushirish
