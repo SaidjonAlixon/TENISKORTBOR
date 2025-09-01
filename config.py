@@ -25,6 +25,14 @@ class Config:
         # Agar DATABASE_URL yo'q bo'lsa, xatolik
         raise ValueError("DATABASE_URL environment variable topilmadi!")
     
+    @classmethod
+    def debug_database_url(cls):
+        """Database URL ni debug qilish"""
+        print(f"🔍 DATABASE_PUBLIC_URL: {os.getenv('DATABASE_PUBLIC_URL')}")
+        print(f"🔍 DATABASE_URL: {os.getenv('DATABASE_URL')}")
+        print(f"🔍 Final DATABASE_URL: {cls.DATABASE_URL}")
+        print(f"🔍 Final get_database_url(): {cls.get_database_url()}")
+    
     # Redis
     REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
     REDIS_HOST = os.getenv("REDIS_HOST", "localhost")

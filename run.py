@@ -50,6 +50,11 @@ def setup_logging():
 async def check_database():
     """Ma'lumotlar bazasini tekshirish"""
     try:
+        # Debug ma'lumotlarini ko'rsatish
+        print("🔍 Database URL debug ma'lumotlari:")
+        Config.debug_database_url()
+        print()
+        
         await init_database()
         print("✅ Ma'lumotlar bazasi tayyor")
         return True
