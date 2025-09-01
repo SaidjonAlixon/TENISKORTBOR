@@ -23,6 +23,9 @@ class Config:
     def get_database_url(cls):
         """Database URL ni olish"""
         if cls.DATABASE_URL:
+            # Railway dan kelgan URL ni asyncpg uchun o'zgartirish
+            if cls.DATABASE_URL.startswith('postgresql://'):
+                return cls.DATABASE_URL.replace('postgresql://', 'postgresql+asyncpg://', 1)
             return cls.DATABASE_URL
         
         # Railway yoki boshqa PostgreSQL uchun URL yaratish
