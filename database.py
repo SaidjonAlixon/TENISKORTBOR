@@ -156,7 +156,7 @@ class Ticket(Base):
     pdf_path: Mapped[Optional[str]] = mapped_column(String(255))
     status: Mapped[TicketStatus] = mapped_column(Enum(TicketStatus), default=TicketStatus.ACTIVE)
     used_at: Mapped[Optional[datetime]] = mapped_column(DateTime)
-    checked_in_by: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey("users.id"))
+    checked_in_by: Mapped[Optional[int]] = mapped_column(BigInteger, ForeignKey("users.id"))
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     
     # Relationships
@@ -186,7 +186,7 @@ class MaintenanceSchedule(Base):
     start_time: Mapped[datetime] = mapped_column(DateTime, nullable=False)
     end_time: Mapped[datetime] = mapped_column(DateTime, nullable=False)
     is_recurring: Mapped[bool] = mapped_column(Boolean, default=False)
-    created_by: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"), nullable=False)
+    created_by: Mapped[int] = mapped_column(BigInteger, ForeignKey("users.id"), nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     
     # Relationships
@@ -199,7 +199,7 @@ class Settings(Base):
     key: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
     value: Mapped[str] = mapped_column(Text, nullable=False)
     description: Mapped[Optional[str]] = mapped_column(Text)
-    updated_by: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey("users.id"))
+    updated_by: Mapped[Optional[int]] = mapped_column(BigInteger, ForeignKey("users.id"))
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 # Database funksiyalari
