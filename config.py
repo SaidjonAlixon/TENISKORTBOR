@@ -10,44 +10,30 @@ class Config:
     BOT_TOKEN = os.getenv("BOT_TOKEN")
     WEBHOOK_URL = os.getenv("WEBHOOK_URL")
     
-    # Database - PostgreSQL
+    # Database - PostgreSQL (Railway)
     DATABASE_URL = os.getenv("DATABASE_URL")
-    DB_HOST = os.getenv("DB_HOST", "localhost")
-    DB_PORT = os.getenv("DB_PORT", "5432")
-    DB_NAME = os.getenv("DB_NAME", "tennis_bot_db")
-    DB_USER = os.getenv("DB_USER", "postgres")
-    DB_PASSWORD = os.getenv("DB_PASSWORD")
+    DB_HOST = os.getenv("PGHOST", "localhost")
+    DB_PORT = os.getenv("PGPORT", "5432")
+    DB_NAME = os.getenv("PGDATABASE", "tennis_bot_db")
+    DB_USER = os.getenv("PGUSER", "postgres")
+    DB_PASSWORD = os.getenv("PGPASSWORD")
     
     # Railway uchun DATABASE_URL yaratish
     @classmethod
     def get_database_url(cls):
         """Database URL ni olish"""
-        print(f"🔍 DATABASE_URL: {cls.DATABASE_URL}")
-        print(f"🔍 DB_HOST: {cls.DB_HOST}")
-        print(f"🔍 DB_PORT: {cls.DB_PORT}")
-        print(f"🔍 DB_NAME: {cls.DB_NAME}")
-        print(f"🔍 DB_USER: {cls.DB_USER}")
-        print(f"🔍 DB_PASSWORD: {'*' * len(cls.DB_PASSWORD) if cls.DB_PASSWORD else 'None'}")
-        
         if cls.DATABASE_URL:
             # Railway dan kelgan URL ni asyncpg uchun o'zgartirish
             if cls.DATABASE_URL.startswith('postgresql://'):
-                url = cls.DATABASE_URL.replace('postgresql://', 'postgresql+asyncpg://', 1)
-                print(f"🔗 Async URL: {url}")
-                return url
-            print(f"🔗 Original URL: {cls.DATABASE_URL}")
+                return cls.DATABASE_URL.replace('postgresql://', 'postgresql+asyncpg://', 1)
             return cls.DATABASE_URL
         
         # Railway yoki boshqa PostgreSQL uchun URL yaratish
         if cls.DB_PASSWORD:
-            url = f"postgresql+asyncpg://{cls.DB_USER}:{cls.DB_PASSWORD}@{cls.DB_HOST}:{cls.DB_PORT}/{cls.DB_NAME}"
-            print(f"🔗 Constructed URL: {url}")
-            return url
+            return f"postgresql+asyncpg://{cls.DB_USER}:{cls.DB_PASSWORD}@{cls.DB_HOST}:{cls.DB_PORT}/{cls.DB_NAME}"
         else:
             # Local development uchun
-            url = f"postgresql+asyncpg://{cls.DB_USER}@{cls.DB_HOST}:{cls.DB_PORT}/{cls.DB_NAME}"
-            print(f"🔗 Local URL: {url}")
-            return url
+            return f"postgresql+asyncpg://{cls.DB_USER}@{cls.DB_HOST}:{cls.DB_PORT}/{cls.DB_NAME}"
     
     # Redis
     REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
