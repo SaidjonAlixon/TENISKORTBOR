@@ -2,7 +2,7 @@ import os
 import asyncpg
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
-from sqlalchemy import String, Integer, DateTime, Boolean, Text, Float, ForeignKey, Enum
+from sqlalchemy import String, Integer, BigInteger, DateTime, Boolean, Text, Float, ForeignKey, Enum
 from datetime import datetime
 from typing import Optional, List
 import enum
@@ -62,7 +62,7 @@ class User(Base):
     __tablename__ = "users"
     
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    telegram_id: Mapped[int] = mapped_column(Integer, unique=True, nullable=False)
+    telegram_id: Mapped[int] = mapped_column(BigInteger, unique=True, nullable=False)
     first_name: Mapped[str] = mapped_column(String(100), nullable=False)
     last_name: Mapped[Optional[str]] = mapped_column(String(100))
     phone_number: Mapped[str] = mapped_column(String(20), unique=True, nullable=False)
