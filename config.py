@@ -10,15 +10,9 @@ class Config:
     BOT_TOKEN = os.getenv("BOT_TOKEN")
     WEBHOOK_URL = os.getenv("WEBHOOK_URL")
     
-    # Database - PostgreSQL (Railway)
+    # Database - PostgreSQL
     DATABASE_URL = os.getenv("DATABASE_PUBLIC_URL") or os.getenv("DATABASE_URL")
-    DB_HOST = os.getenv("PGHOST", "localhost")
-    DB_PORT = os.getenv("PGPORT", "5432")
-    DB_NAME = os.getenv("PGDATABASE", "tennis_bot_db")
-    DB_USER = os.getenv("PGUSER", "postgres")
-    DB_PASSWORD = os.getenv("PGPASSWORD")
     
-    # Railway uchun DATABASE_URL yaratish
     @classmethod
     def get_database_url(cls):
         """Database URL ni olish"""
@@ -28,12 +22,8 @@ class Config:
                 return cls.DATABASE_URL.replace('postgresql://', 'postgresql+asyncpg://', 1)
             return cls.DATABASE_URL
         
-        # Railway yoki boshqa PostgreSQL uchun URL yaratish
-        if cls.DB_PASSWORD:
-            return f"postgresql+asyncpg://{cls.DB_USER}:{cls.DB_PASSWORD}@{cls.DB_HOST}:{cls.DB_PORT}/{cls.DB_NAME}"
-        else:
-            # Local development uchun
-            return f"postgresql+asyncpg://{cls.DB_USER}@{cls.DB_HOST}:{cls.DB_PORT}/{cls.DB_NAME}"
+        # Agar DATABASE_URL yo'q bo'lsa, xatolik
+        raise ValueError("DATABASE_URL environment variable topilmadi!")
     
     # Redis
     REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
